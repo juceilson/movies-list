@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie List</title>
+</head>
+<body>
+    <h1>Movie List</h1>
+    <form id="searchForm">
+        <input type="text" id="searchInput" placeholder="Search for a movie...">
+        <button type="submit">Search</button>
+    </form>
+    <section>
+        <ul id="movieList"></ul>
+    </section>
+
+
+
+    <script>
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const movieList = document.getElementById('movieList');
+
+        searchForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const query = searchInput.value.trim();
+            if (query) {
+                try {
+                    const response = await fetch(`/api/movies?title=${encodeURIComponent(query)}`);
+                    const data = await response.json();
+                    
+                    if (data.Response === 'False') {
+                        displayMessage('Nenhum filme encontrado.');
+                        return;
+                    }
+                    
+                    displayMovies(data.Search);
+                } catch (error) {
+                    displayMessage('Erro ao buscar filmes.');
+                }
+            }
+        });
+
+        function displayMovies(movies) {
+            movieList.innerHTML = '';
+
+            const cardContainer = document.createElement('div');
+            cardContainer.className = 'card-container';
+            movieList.appendChild(cardContainer);
+
+            movies.forEach(movie => {
+                const listItem = document.createElement('li');
+                const listImage = document.createElement('img');
+                listImage.src = movie.Poster !== 'N/A' ? movie.Poster : "/";
+                listItem.textContent = `${movie.Title} (${movie.Year})`;
+                cardContainer.appendChild(listImage);
+                cardContainer.appendChild(listItem);
+            });
+        }
+        
+        function displayMessage(message) {
+            movieList.innerHTML = '';
+            const listItem = document.createElement('span');
+            listItem.textContent = message;
+            movieList.appendChild(listItem);
+        }
+    </script>
+    
+</body>
+</html>
