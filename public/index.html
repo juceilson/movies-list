@@ -30,7 +30,7 @@
                 try {
                     const response = await fetch(`/api/movies?title=${encodeURIComponent(query)}`);
                     const data = await response.json();
-                    
+                    console.log('Data received from API:', data.Search);
                     if (data.Response === 'False') {
                         displayMessage('Nenhum filme encontrado.');
                         return;
