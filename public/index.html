@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie List</title>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <h1>Movie List</h1>
@@ -45,25 +46,20 @@
         function displayMovies(movies) {
             movieList.innerHTML = '';
 
-            const cardContainer = document.createElement('div');
-            cardContainer.className = 'card-container';
-            movieList.appendChild(cardContainer);
-
             movies.forEach(movie => {
-                const listItem = document.createElement('li');
-                const listImage = document.createElement('img');
-                listImage.src = movie.Poster !== 'N/A' ? movie.Poster : "/";
-                listItem.textContent = `${movie.Title} (${movie.Year})`;
-                cardContainer.appendChild(listImage);
-                cardContainer.appendChild(listItem);
+                const movieCard = `
+                    <li class="card">
+                        <img class="movie-poster" src="${movie.Poster !== 'N/A' ? movie.Poster : '/'}" alt="${movie.Title}">
+                        <span>${movie.Title} (${movie.Year})</span>
+                    </li>
+                `;
+                movieList.innerHTML += movieCard;
+
             });
         }
         
         function displayMessage(message) {
-            movieList.innerHTML = '';
-            const listItem = document.createElement('span');
-            listItem.textContent = message;
-            movieList.appendChild(listItem);
+            movieList.innerHTML = `<span>${message}</span>`;
         }
     </script>
     
