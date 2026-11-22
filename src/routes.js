@@ -8,10 +8,10 @@ router.get('/movies', async (req, res) => {
   try {
     const response = await fetch(`http://www.omdbapi.com/?s=${title}&apikey=${apiKey}`);
     const data = await response.json();
-    res.status(200).json(data);
+    return res.status(200).json(data);
+
   } catch (error) {
-    console.error('Erro ao buscar os filmes:', error);
-    res.status(500).json({ error: 'Erro interno do servidor' });
+    return res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
 
